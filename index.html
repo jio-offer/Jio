@@ -1,50 +1,152 @@
 
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <title>Recharge Offer</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Mobile Recharge</title>
   <style>
-    body { font-family: Arial; background: #f7f7f7; padding: 20px; text-align: center; }
-    .box { background: white; padding: 20px; border-radius: 10px; max-width: 400px; margin: auto; box-shadow: 0 0 10px gray; }
-    .hidden { display: none; }
-    button { padding: 10px 20px; font-size: 16px; margin-top: 10px; background: #28a745; color: white; border: none; border-radius: 5px; }
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #f2f5fa;
+    }
+    .navbar {
+      background-color: #003366;
+      color: white;
+      padding: 10px 15px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .navbar .logo {
+      font-weight: bold;
+      font-size: 18px;
+    }
+    .navbar .search-container {
+      flex-grow: 1;
+      margin: 0 15px;
+    }
+    .navbar input[type="text"] {
+      width: 100%;
+      padding: 6px 10px;
+      border-radius: 5px;
+      border: none;
+    }
+    .navbar .icons {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .navbar .profile {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      background-color: white;
+    }
+    .main-box {
+      background-color: white;
+      max-width: 400px;
+      margin: 30px auto;
+      border-radius: 10px;
+      padding: 20px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+    .main-box h2 {
+      color: #003366;
+      margin-bottom: 20px;
+      font-size: 20px;
+    }
+    .sim-icons {
+      display: flex;
+      justify-content: space-around;
+      margin-bottom: 20px;
+    }
+    .sim-icons img {
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      border: 2px solid transparent;
+      cursor: pointer;
+    }
+    .sim-icons img.selected {
+      border-color: #007bff;
+    }
+    input[type="text"] {
+      width: 100%;
+      padding: 10px;
+      font-size: 16px;
+      margin-bottom: 15px;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+    }
+    button {
+      width: 100%;
+      padding: 12px;
+      font-size: 16px;
+      background-color: #003366;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    .info-box {
+      background-color: #e6f0ff;
+      padding: 10px;
+      border-radius: 5px;
+      margin-top: 15px;
+      font-size: 14px;
+      color: #333;
+    }
   </style>
 </head>
 <body>
 
-<div class="box">
-  <h2>🔥 Jio Recharge Offer – ₹200 Only</h2>
-
-  <form id="offerForm" action="https://formsubmit.co/YOUR@EMAIL.COM" method="POST">
-    <input type="text" name="mobile" placeholder="Enter Mobile Number" required><br><br>
-    <input type="hidden" name="offer" value="Jio Recharge ₹200">
-    <button type="submit">Submit</button>
-  </form>
-
-  <div id="paymentSection" class="hidden">
-    <h3>✅ Now Pay ₹200</h3>
-    <img src="upi_qr_jio_owner_200rs.png" alt="Scan QR" width="200"><br><br>
-    <p>or pay to UPI ID: <strong>9644548724@airtel</strong><br>(Payee Name: <strong>Jio Owner</strong>)</p>
-    <button onclick="showDone()">I Have Paid</button>
+<div class="navbar">
+  <div class="logo">Jio</div>
+  <div class="search-container">
+    <input type="text" placeholder="Search">
   </div>
-
-  <div id="doneSection" class="hidden">
-    <h2>✅ Payment Done!</h2>
-    <p>Your recharge request has been received. Thank you!</p>
+  <div class="icons">
+    <div class="dots">⋮</div>
+    <div class="profile"></div>
   </div>
 </div>
 
-<script>
-  const form = document.getElementById('offerForm');
-  form.addEventListener('submit', function(e) {
-    e.preventDefault();
-    document.getElementById('paymentSection').classList.remove('hidden');
-    form.classList.add('hidden');
-  });
+<div class="main-box">
+  <h2>Mobile Recharge</h2>
+  <div class="sim-icons">
+    <img src="jio.png" alt="Jio" onclick="selectSim('Jio', this)">
+    <img src="airtel.png" alt="Airtel" onclick="selectSim('Airtel', this)">
+    <img src="vi.png" alt="Vi" onclick="selectSim('Vi', this)">
+    <img src="bsnl.png" alt="BSNL" onclick="selectSim('BSNL', this)">
+  </div>
+  <input type="text" id="mobile" placeholder="Enter 10 digit mobile number" maxlength="10">
+  <button onclick="submitRecharge()">Recharge</button>
+  <div class="info-box">Recharge with a ₹199 plan for a month full of digital delights.</div>
+</div>
 
-  function showDone() {
-    document.getElementById('doneSection').classList.remove('hidden');
-    document.getElementById('paymentSection').classList.add('hidden');
+<script>
+  let selectedSim = '';
+  function selectSim(sim, element) {
+    selectedSim = sim;
+    document.querySelectorAll('.sim-icons img').forEach(img => {
+      img.classList.remove('selected');
+    });
+    element.classList.add('selected');
+  }
+
+  function submitRecharge() {
+    const mobile = document.getElementById('mobile').value.trim();
+    if (selectedSim === '') {
+      alert('Please select your SIM.');
+      return;
+    }
+    if (mobile.length !== 10 || isNaN(mobile)) {
+      alert('Please enter a valid 10-digit mobile number.');
+      return;
+    }
+    alert(`SIM: ${selectedSim}\nNumber: ${mobile}\nProceeding to ₹199 Recharge.`);
   }
 </script>
 
