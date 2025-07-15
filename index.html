@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Recharge Offer</title>
+  <style>
+    body { font-family: Arial; background: #f7f7f7; padding: 20px; text-align: center; }
+    .box { background: white; padding: 20px; border-radius: 10px; max-width: 400px; margin: auto; box-shadow: 0 0 10px gray; }
+    .hidden { display: none; }
+    button { padding: 10px 20px; font-size: 16px; margin-top: 10px; background: #28a745; color: white; border: none; border-radius: 5px; }
+    select, input { padding: 10px; width: 80%; margin-bottom: 10px; border-radius: 5px; border: 1px solid #ccc; }
+    img.sim-img { width: 80px; height: auto; margin: 10px; display: none; }
+  </style>
+</head>
+<body>
+
+<div class="box">
+  <h2>🔥 Recharge Offer – ₹200 Only</h2>
+
+  <!-- Step 1: Mobile & SIM -->
+  <div id="step1">
+    <input type="text" id="mobile" placeholder="Enter Mobile Number" required><br>
+    <select id="simType" onchange="updateSimImage()">
+      <option value="" disabled selected>Select SIM</option>
+      <option value="Jio">Jio</option>
+      <option value="Airtel">Airtel</option>
+      <option value="BSNL">BSNL</option>
+      <option value="Vi">Vi</option>
+    </select><br>
+    <img id="simImage" class="sim-img" src="" alt="SIM Image"><br>
+    <button onclick="goToStep2()">Next</button>
+  </div>
+
+  <!-- Step 2: Recharge Confirm -->
+  <div id="step2" class="hidden">
+    <h3>📲 Confirm Recharge</h3>
+    <p>Number: <span id="enteredNumber"></span></p>
+    <p>SIM: <span id="selectedSim"></span></p>
+    <p>Amount: <strong>₹200</strong></p>
+    <button onclick="goToPayment()">Proceed to Pay</button>
+  </div>
+
+  <!-- Step 3: Payment -->
+  <div id="paymentSection" class="hidden">
+    <h3>✅ Scan to Pay ₹200</h3>
+    <img src="qr.png" alt="Scan QR" width="200"><br><br>
+    <p>or pay to UPI ID: <strong>9644548724@airtel</strong><br>(Payee Name: <strong>Recharge Center</strong>)</p>
+    <button onclick="showDone()">I Have Paid</button>
+  </div>
+
+  <!-- Step 4: Payment Done -->
+  <div id="doneSection" class="hidden">
+    <h2>✅ Payment Done!</h2>
+    <p>Your recharge request has been received. Thank you!</p>
+  </div>
+</div>
+
+<script>
+  function updateSimImage() {
+    var sim = document.getElementById("simType").value;
+    var img = document.getElementById("simImage");
+    if (sim) {
+      img.src = sim.toLowerCase() + ".png"; // e.g. jio.png, airtel.png
+      img.style.display = "inline";
+    } else {
+      img.style.display = "none";
+    }
+  }
+
+  function goToStep2() {
+    const mobile = document.getElementById("mobile").value;
+    const sim = document.getElementById("simType").value;
+
+    if (!mobile || !sim) {
+      alert("Please enter mobile number and select SIM type.");
+      return;
+    }
+
+    document.getElementById("enteredNumber").innerText = mobile;
+    document.getElementById("selectedSim").innerText = sim;
+
+    document.getElementById("step1").classList.add("hidden");
+    document.getElementById("step2").classList.remove("hidden");
+  }
+
+  function goToPayment() {
+    document.getElementById("step2").classList.add("hidden");
+    document.getElementById("paymentSection").classList.remove("hidden");
+  }
+
+  function showDone() {
+    document.getElementById("paymentSection").classList.add("hidden");
+    document.getElementById("doneSection").classList.remove("hidden");
+  }
+</script>
+
+</body>
+</html>
