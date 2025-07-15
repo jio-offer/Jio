@@ -1,0 +1,187 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Mobile Recharge</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background-color: #f1f1f1;
+    }
+    header {
+      background-color: #0052cc;
+      padding: 15px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      color: white;
+    }
+    .search-bar {
+      display: flex;
+      align-items: center;
+      background: white;
+      border-radius: 20px;
+      padding: 5px 10px;
+      width: 60%;
+    }
+    .search-bar input {
+      border: none;
+      outline: none;
+      margin-left: 10px;
+      width: 100%;
+    }
+    .container {
+      max-width: 400px;
+      margin: 20px auto;
+      background: white;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+    .operators {
+      display: flex;
+      justify-content: space-around;
+      margin-bottom: 10px;
+    }
+    .operator-option {
+      text-align: center;
+    }
+    .operator-option input[type="radio"] {
+      margin-top: 5px;
+    }
+    .operator-option img {
+      width: 50px;
+      height: 50px;
+    }
+    input[type='tel'], button {
+      width: 100%;
+      padding: 10px;
+      margin: 10px 0;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+    }
+    button {
+      background-color: #0052cc;
+      color: white;
+      border: none;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #0041a3;
+    }
+    .hidden {
+      display: none;
+    }
+    .qr-img {
+      display: block;
+      margin: 20px auto;
+      width: 200px;
+    }
+    .success {
+      text-align: center;
+      color: green;
+    }
+    #timer {
+      color: green;
+      font-weight: bold;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <div>☰</div>
+  <div class="search-bar">
+    🔍<input type="text" placeholder="Search">
+  </div>
+  <div>👤</div>
+</header>
+
+<div class="container">
+  <div id="step1">
+    <h3>📱 Mobile Recharge</h3>
+    <div class="operators">
+      <label class="operator-option">
+        <img src="assets/jio.png" alt="Jio">
+        <br><input type="radio" name="operator" value="Jio" checked>
+      </label>
+      <label class="operator-option">
+        <img src="assets/airtel.png" alt="Airtel">
+        <br><input type="radio" name="operator" value="Airtel">
+      </label>
+      <label class="operator-option">
+        <img src="assets/vi.png" alt="Vi">
+        <br><input type="radio" name="operator" value="Vi">
+      </label>
+      <label class="operator-option">
+        <img src="assets/bsnl.png" alt="BSNL">
+        <br><input type="radio" name="operator" value="BSNL">
+      </label>
+    </div>
+    <input type="tel" id="mobile" placeholder="Enter 10 digit mobile number" maxlength="10" />
+    <button onclick="goToStep2()">Next</button>
+  </div>
+
+  <div id="step2" class="hidden">
+    <h3>Recharge Plan - ₹199</h3>
+    <ul>
+      <li>Validity: 84 Days</li>
+      <li>3 GB Data / Day</li>
+      <li>Unlimited Calls</li>
+      <li>100 SMS / Day</li>
+    </ul>
+    <button onclick="goToPayment()">Pay ₹199</button>
+  </div>
+
+  <div id="step3" class="hidden">
+    <h3>Scan to Pay ₹199</h3>
+    <img src="assets/scanner.png" alt="Scan QR" class="qr-img" />
+    <p style="text-align:center;">Pay to recharge company</p>
+    <p id="timer">Limited Time Offer</p>
+  </div>
+
+  <div id="step4" class="hidden success">
+    <h3>✅ Thank you for recharge in your mobile</h3>
+  </div>
+</div>
+
+<script>
+  function goToStep2() {
+    const mobile = document.getElementById("mobile").value;
+    if (mobile.length === 10 && !isNaN(mobile)) {
+      document.getElementById("step1").classList.add("hidden");
+      document.getElementById("step2").classList.remove("hidden");
+    } else {
+      alert("Please enter a valid 10 digit number.");
+    }
+  }
+
+  function goToPayment() {
+    document.getElementById("step2").classList.add("hidden");
+    document.getElementById("step3").classList.remove("hidden");
+    startTimer();
+  }
+
+  function startTimer() {
+    let time = 120;
+    const timerEl = document.getElementById("timer");
+    const interval = setInterval(() => {
+      time--;
+      const minutes = Math.floor(time / 60);
+      const seconds = time % 60;
+      timerEl.textContent = `Limited Time Offer: ${minutes}:${seconds < 10 ? "0" : ""}${seconds}`;
+      if (time <= 0) {
+        clearInterval(interval);
+        document.getElementById("step3").classList.add("hidden");
+        document.getElementById("step4").classList.remove("hidden");
+      }
+    }, 1000);
+  }
+</script>
+
+</body>
+</html>
