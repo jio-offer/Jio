@@ -1,56 +1,48 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Mobile Recharge</title>
   <style>
     body {
       margin: 0;
-      font-family: Arial, sans-serif;
-      background-color: #f2f2f2;
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #f4f6f8;
     }
     header {
       background-color: #0052cc;
       color: white;
-      padding: 10px 20px;
+      padding: 15px 25px;
       display: flex;
       justify-content: space-between;
       align-items: center;
     }
-    header .icons {
-      display: flex;
-      gap: 10px;
-    }
-    header .icons span {
-      font-size: 24px;
-      cursor: pointer;
-    }
     .container {
-      max-width: 400px;
-      margin: 20px auto;
+      max-width: 420px;
+      margin: 30px auto;
       background-color: white;
-      padding: 20px;
+      padding: 25px;
       border-radius: 10px;
-      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+      box-shadow: 0 4px 20px rgba(0,0,0,0.08);
     }
-    h2, h3 {
-      color: #333;
+    h2, h3, p {
+      color: #222;
+      margin-bottom: 10px;
     }
     input, select, button {
       width: 100%;
-      padding: 10px;
-      margin-top: 10px;
-      margin-bottom: 15px;
-      border-radius: 5px;
+      padding: 12px;
+      margin: 10px 0 20px 0;
+      border-radius: 6px;
       border: 1px solid #ccc;
+      font-size: 15px;
     }
     button {
       background-color: #28a745;
       color: white;
       border: none;
-      cursor: pointer;
+      transition: background-color 0.3s ease;
     }
     button:hover {
       background-color: #218838;
@@ -65,6 +57,16 @@
     }
     .success {
       color: green;
+      font-weight: bold;
+    }
+    .operator-option {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .operator-option img {
+      width: 24px;
+      height: 24px;
     }
   </style>
 </head>
@@ -72,25 +74,25 @@
 
 <header>
   <div><strong>Mobile Recharge</strong></div>
-  <div class="icons">
-    <span>&#128269;</span>
-    <span>&#8942;</span>
-    <span>&#128100;</span>
-  </div>
 </header>
 
 <div class="container">
   <div id="step1">
     <h2>Select Operator</h2>
     <select id="operator">
-      <option value="Jio">Jio</option>
-      <option value="Airtel">Airtel</option>
-      <option value="Vi">Vi</option>
-      <option value="BSNL">BSNL</option>
+      <option value="Jio" data-logo="jio.png">Jio</option>
+      <option value="Airtel" data-logo="airtel.png">Airtel</option>
+      <option value="Vi" data-logo="vi.png">Vi</option>
+      <option value="BSNL" data-logo="bsnl.png">BSNL</option>
     </select>
 
+    <div id="operatorDisplay" class="operator-option hidden">
+      <img id="operatorLogo" src="" alt="Operator Logo" />
+      <span id="operatorName"></span>
+    </div>
+
     <h2>Enter Mobile Number</h2>
-    <input type="text" id="mobile" placeholder="Enter 10 digit number" maxlength="10" required>
+    <input type="text" id="mobile" placeholder="Enter 10 digit number" maxlength="10" required />
 
     <button onclick="goToStep2()">Next</button>
   </div>
@@ -103,18 +105,32 @@
 
   <div id="step3" class="hidden">
     <h3>Scan to Pay ₹200</h3>
-    <img src="scanner.png" alt="Scan QR" class="qr-img">
+    <img src="scanner.png" alt="Scan QR" class="qr-img" />
     <p>Pay to UPI ID: <strong>trio@upi</strong></p>
     <button onclick="confirmPayment()">I Have Paid</button>
   </div>
 
   <div id="step4" class="hidden">
-    <h3 class="success">✅ Payment Done!</h3>
+    <h3 class="success">Payment Successful!</h3>
     <p>Your recharge request has been received. Thank you!</p>
   </div>
 </div>
 
 <script>
+  const operatorSelect = document.getElementById("operator");
+  const operatorDisplay = document.getElementById("operatorDisplay");
+  const operatorLogo = document.getElementById("operatorLogo");
+  const operatorName = document.getElementById("operatorName");
+
+  operatorSelect.addEventListener("change", () => {
+    const selectedOption = operatorSelect.options[operatorSelect.selectedIndex];
+    const logo = selectedOption.getAttribute("data-logo");
+    const name = selectedOption.value;
+    operatorLogo.src = logo;
+    operatorName.textContent = name;
+    operatorDisplay.classList.remove("hidden");
+  });
+
   function goToStep2() {
     const mobile = document.getElementById("mobile").value;
     if (mobile.length === 10 && !isNaN(mobile)) {
